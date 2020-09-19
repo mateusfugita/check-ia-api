@@ -5,7 +5,7 @@ const generateCountryInfoObject = require('../utils/generateCountryInfoObject');
 class CountriesController {
     async getImages(req, res){
         const { countryName } = req.params;
-        const apikey = process.env.APIKEY;
+        const apikey = process.env.UNSPLASH_APIKEY;
 
         if(!countryName) return res.status(400).json({ error: 'Wrong parameter' });
         
