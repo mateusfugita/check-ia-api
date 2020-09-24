@@ -9,7 +9,7 @@ routes.get('/country/info/:countryInitials', countriesController.getInfo);
 routes.get('/about', function(req, res){
     res.json({
         "applicationName":"check-IA",
-        "version":"v0.1.0"
+        "version":"v0.1.1"
     });
 })
 
