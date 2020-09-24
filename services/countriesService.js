@@ -1,45 +1,100 @@
-const mongo = require('mongoskin');
-const connection = process.env.MONGO_URL;
-const db = mongo.db(connection, { native_parser: true });
-db.bind('country');
+const {MongoClient} = require('mongodb');
+require('dotenv').config();
+const uri = process.env.MONGO_URL;
+const client = new MongoClient(uri, {useUnifiedTopology: true});
 
 const service = {
     create: create,
-    // index: index,
     findOne: findOne,
     findAll, findAll,
     delete: _delete,
     update: update,
 }
 
-function create(countryParams){
-    db.country.insert(countryParams, function(err){
-
-    })
+async function create(countryParams){
+    let message;
+    console.log(countryParams);
+    try {
+        await client.connect();
+        const countryCollection = client.db('checkia').collection('country');
+        const result = await countryCollection.insertOne(countryParams);
+        message = { insertedCount: result.insertedCount };
+    } catch (error) {
+        message = { erro: 'Ocorreu um erro ao realizar a operação no banco' };
+    }
+    finally{
+        await client.close();
+        return message;
+    }
 }
 
-// function index(name){
-//     return (name ? findOne(name) : findAll);
-// }
-
-function findOne(name){
-    db.country.findOne({ name }, (err, country) => {
-        return country;
-    });
+async function findOne(name){
+    let message;
+    try {
+        await client.connect();
+        const countryCollection = client.db('checkia').collection('country');
+        const findResult = await countryCollection.findOne({ name });
+        message = { country: findResult };
+    } catch (error) {
+        message = { erro: 'Ocorreu um erro ao realizar a operação no banco' };
+    }
+    finally{
+        await client.close();
+        return message;
+    }
 }
 
-function findAll(){
-    db.country.find().toArray((err, items) => {
-        return items;
-    });
+async function findAll(){
+    let message;
+    let countries = [];
+    try {
+        await client.connect();
+        const countryCollection = client.db('checkia').collection('country');
+        const cursor = countryCollection.find({});
+        await cursor.forEach(result => {
+            countries.push(result);
+        });
+        message = { countries };
+    } catch (error) {
+        message = { erro: 'Ocorreu um erro ao realizar a operação no banco' };
+    }
+    finally{
+        await client.close();
+        return message;
+    }
 }
 
-function _delete(){
-
+async function _delete(name){
+    let message;
+    try {
+        await client.connect();
+        const countryCollection = client.db('checkia').collection('country');
+        const deletedResult = await countryCollection.deleteOne({ name });
+        message = { deletedCount: deletedResult.deletedCount};
+    } catch (error) {
+        message = { erro: 'Ocorreu um erro ao realizar a operação no banco' };
+    }
+    finally{
+        await client.close();
+        return message;
+    }
 }
 
-function update(){
-
+async function update(name, ptName, abbreviation){
+    let message;
+    try {
+        await client.connect();
+        const countryCollection = client.db('checkia').collection('country');
+        const filter = { name };
+        const result = await countryCollection.replaceOne(filter, { name, ptName, abbreviation });
+        message = { newCountryValues: result.ops };
+    } catch (error) {
+        message = { erro: 'Ocorreu um erro ao realizar a operação no banco' };
+    }
+    finally{
+        await client.close();
+        return message;
+    }
 }
 
 module.exports = service;
