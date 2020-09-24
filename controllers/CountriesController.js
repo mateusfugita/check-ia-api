@@ -6,35 +6,29 @@ const generateCountryInfoObject = require('../utils/generateCountryInfoObject');
 
 class CountriesController {
     async index(req, res){
-        const { countryName } = req.params;
-        try {
-          const countriesFound = (countryName ? countriesService.findOne(countryName) : countriesService.findAll());
-          res.json({ countries: countriesFound} );
-        } catch (error) {
-          res.json({ message: 'Ocorreu um erro ao realizar a operação no banco'} );
-        }
-        // countriesService.find(countryName).then((data) =>{
-        //   res.json({ countries: data});
-        // })
-        // .catch(() => {
-        //   res.json({ message: 'Ocorreu um erro ao realizar a operação no banco'});
-        // })
+        const { name } = req.query;
+        const result = (name ? await countriesService.findOne(name) : await countriesService.findAll());
+        res.json(result);
     }
+
     async create(req, res){
         const { name, ptName, abbreviation } = req.body;
-        try {
-          const message = ((name && ptName && abbreviation) ? countriesService.create(req.body) : 'Nenhum dos campos pode estar vazio');
-          res.json({ message });
-        } catch (error) {
-          res.json({ message: 'Ocorreu um erro ao realizar a operação no banco'});
-        }
+        const message = ((name && ptName && abbreviation) ? await countriesService.create(req.body) : { erro: 'Nenhum dos campos pode estar vazio' });
+        res.json(message);
     }
+
     async update(req, res){
-
+      const { name, ptName, abbreviation } = req.body;
+      const message = ((name && ptName && abbreviation) ? await countriesService.update(name, ptName, abbreviation) : { erro: 'Nenhum dos campos pode estar vazio' });
+      res.json(message);
     }
+
     async delete(req, res){
-
+      const { countryName } = req.params;
+      const message = (countryName ? await countriesService.delete(countryName) : { erro: 'É necessário informar o nome do país a ser excluído' });
+      res.json(message);
     }
+
     async getImages(req, res){
         const { countryName } = req.params;
         const apikey = process.env.UNSPLASH_APIKEY;
@@ -54,6 +48,7 @@ class CountriesController {
         });
 
     }
+
     async getInfo(req,res){
       const { countryInitials } = req.params;
       const countryAttributes = ['Capital', 'Área', 'Língua', 'Região', 'Moeda'];        
