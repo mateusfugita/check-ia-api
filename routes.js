@@ -1,16 +1,15 @@
 const express = require('express');
 const routes = express.Router();
 
+const AboutController = require('./controllers/AboutController');
+const aboutController = new AboutController();
+
 const CountriesController = require('./controllers/CountriesController');
 const countriesController = new CountriesController();
 
+routes.get('/about', aboutController.getProjectInfo);
+
 routes.get('/country/images/:countryName', countriesController.getImages);
 routes.get('/country/info/:countryInitials', countriesController.getInfo);
-routes.get('/about', function(req, res){
-    res.json({
-        "applicationName":"check-IA",
-        "version":"v0.1.0"
-    });
-})
 
 module.exports = routes;
