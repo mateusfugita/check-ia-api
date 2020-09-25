@@ -18,8 +18,8 @@ class CountriesController {
     }
 
     async update(req, res){
-      const { name, ptName, abbreviation } = req.body;
-      const message = ((name && ptName && abbreviation) ? await countriesService.update(name, ptName, abbreviation) : { erro: 'Nenhum dos campos pode estar vazio' });
+      const { name, newPtName, newAbbreviation } = req.body;
+      const message = ((name && newPtName && newAbbreviation) ? await countriesService.update(name, newPtName, newAbbreviation) : { erro: 'Nenhum dos campos pode estar vazio' });
       res.json(message);
     }
 
