@@ -66,7 +66,25 @@ class CountriesController {
       .catch(function(err){
         res.json({ error: 'Não foi possível obter as informações' });
       });
-  }
+    }
+
+    async predict(req, res){
+      const config = {
+        method: 'POST',
+        url: process.env.ML_API_URL || 'http://localhost:5000/predict',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        data: JSON.stringify(req.body),
+      }
+
+      axios(config).then(function (response) {
+        res.json(response.data);
+      })
+      .catch(function(err){
+        res.json({ error: 'Não foi possível obter uma sugestão de destino.' });
+      });
+    }
 }
 
 module.exports = CountriesController;

@@ -15,5 +15,6 @@ routes.delete('/country/:countryName', countriesController.delete);
 routes.get('/country', countriesController.index);
 routes.get('/country/images/:countryName', countriesController.getImages);
 routes.get('/country/info/:countryInitials', countriesController.getInfo);
+routes.post('/country/predict', countriesController.predict);
 
 module.exports = routes;
