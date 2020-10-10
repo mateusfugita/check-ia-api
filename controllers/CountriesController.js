@@ -71,7 +71,7 @@ class CountriesController {
     async predict(req, res){
       const config = {
         method: 'POST',
-        url: process.env.ML_API_URL || 'http://localhost:5000/predict',
+        url: `${process.env.ML_API_URL}/predict` || 'http://localhost:5000/predict',
         headers: { 
           'Content-Type': 'application/json'
         },
