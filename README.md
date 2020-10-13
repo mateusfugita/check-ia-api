@@ -14,6 +14,8 @@
    UNSPLASH_APIKEY=
    ```
 
+4. If you want to use the country prediction route, clone and run [this repository](https://github.com/mateusfugita/check-ia-ml) before continuing the next steps.
+
 ## Run locally
 1. Install the dependencies
 
