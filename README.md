@@ -30,6 +30,8 @@
    UNSPLASH_APIKEY=
    ```
 
+5. Still in the .env file, add the connection URL from MongoDB (`MONGO_URL`) and a secret key to work with JWT authentication (`SECRET`). The `ML_API_URL` is not necessary if you are running the ML API locally.
+
 ## :computer: Running locally
 1. Install the dependencies
 
@@ -50,4 +52,4 @@
        npm start
        ```
     
-3. The application will be running in `localhost:3000`.
+3. The application will be running in `localhost:3333`.
